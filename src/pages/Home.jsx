@@ -83,7 +83,7 @@ export default function Home() {
   const fetchDocs = useCallback(async () => {
     if (!isLoggedIn) return;
     try {
-      const res = await axios.get("https://doc-backend-h9aw.onrender.com//api/docs/my-docs", {
+      const res = await axios.get("https://docs-backend-r71d.onrender.com//api/docs/my-docs", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setDocs(res.data);
@@ -119,7 +119,7 @@ useEffect(() => {
   const confirmDelete = async () => {
     if (!deleteTarget || deleteInput !== deleteTarget.name) return;
     try {
-      await axios.delete(`https://doc-backend-h9aw.onrender.com//api/docs/my-docs/${deleteTarget._id}`, {
+      await axios.delete(`https://docs-backend-r71d.onrender.com//api/docs/my-docs/${deleteTarget._id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setDeleteTarget(null);
@@ -133,7 +133,7 @@ useEffect(() => {
   const setFavorite = async (id) => {
     try {
       const res = await axios.patch(
-        `https://doc-backend-h9aw.onrender.com//api/docs/my-docs/${id}/favorite`,
+        `https://docs-backend-r71d.onrender.com//api/docs/my-docs/${id}/favorite`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -149,7 +149,7 @@ useEffect(() => {
 
   const shareDocAsPDF = async (doc) => {
     try {
-      const res = await axios.get(`https://doc-backend-h9aw.onrender.com//api/docs/my-docs/${doc._id}`, {
+      const res = await axios.get(`https://docs-backend-r71d.onrender.com//api/docs/my-docs/${doc._id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const fullDoc = res.data;

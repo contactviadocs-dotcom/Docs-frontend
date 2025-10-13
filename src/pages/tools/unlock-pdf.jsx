@@ -64,7 +64,7 @@ export default function UnlockPDF() {
       form.append("pdfFile", file);
 
       const res = await axios.post(
-        "https://doc-backend-h9aw.onrender.com//api/tools/unlock-pdf/check",
+        "https://docs-backend-r71d.onrender.com//api/tools/unlock-pdf/check",
         form,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -88,7 +88,7 @@ export default function UnlockPDF() {
       if (password) form.append("password", password);
 
       const res = await axios.post(
-        "https://doc-backend-h9aw.onrender.com//api/tools/unlock-pdf/unlock",
+        "https://docs-backend-r71d.onrender.com//api/tools/unlock-pdf/unlock",
         form,
         { responseType: "blob" }
       );

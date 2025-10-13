@@ -25,7 +25,7 @@ export default function Contact() {
     setSuccess(false);
 
     try {
-      const res = await axios.post("https://doc-backend-h9aw.onrender.com//api/contact", formData);
+      const res = await axios.post("https://docs-backend-r71d.onrender.com//api/contact", formData);
       if (res.status === 200) {
         setSuccess(true);
         setFormData({ name: "", email: "", message: "" });

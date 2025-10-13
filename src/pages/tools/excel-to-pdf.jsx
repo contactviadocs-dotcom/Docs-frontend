@@ -64,13 +64,13 @@ export default function ExcelToPdf() {
       formData.append("file", file);
 
       const response = await axios.post(
-        "https://doc-backend-h9aw.onrender.com//api/tools/excel-to-pdf",
+        "https://docs-backend-r71d.onrender.com//api/tools/excel-to-pdf",
         formData
       );
 
       if (response.data && response.data.success) {
         // server returns path in response.data.file (e.g. "/uploads/converted/abc.pdf")
-        const url = "https://doc-backend-h9aw.onrender.com/" + response.data.file;
+        const url = "https://docs-backend-r71d.onrender.com/" + response.data.file;
         setDownloadUrl(url);
         setIsComplete(true);
       } else {

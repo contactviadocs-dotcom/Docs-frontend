@@ -58,7 +58,7 @@ export default function PdfMerge() {
       files.forEach((f) => formData.append("files", f));
 
       const response = await axios.post(
-        "https://doc-backend-h9aw.onrender.com//api/tools/pdf-merge",
+        "https://docs-backend-r71d.onrender.com//api/tools/pdf-merge",
         formData,
         { responseType: "blob" }
       );

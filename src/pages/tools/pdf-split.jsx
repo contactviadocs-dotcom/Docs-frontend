@@ -61,7 +61,7 @@ export default function PdfSplit() {
       formData.append("ranges", `${fromPage}-${toPage}`);
 
       const response = await axios.post(
-        "https://doc-backend-h9aw.onrender.com//api/tools/pdf-split",
+        "https://docs-backend-r71d.onrender.com//api/tools/pdf-split",
         formData,
         { responseType: "blob" }
       );

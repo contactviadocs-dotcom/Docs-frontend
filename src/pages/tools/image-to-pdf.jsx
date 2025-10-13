@@ -67,7 +67,7 @@ export default function ImageToPdf() {
       files.forEach((file) => formData.append("images", file));
 
       const response = await axios.post(
-        "https://doc-backend-h9aw.onrender.com//api/tools/image-to-pdf",
+        "https://docs-backend-r71d.onrender.com//api/tools/image-to-pdf",
         formData,
         { responseType: "blob" }
       );

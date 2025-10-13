@@ -87,7 +87,7 @@ export default function Profile() {
 
   const fetchProfile = async () => {
     try {
-      const response = await axios.get("https://doc-backend-h9aw.onrender.com//api/profile", {
+      const response = await axios.get("https://docs-backend-r71d.onrender.com//api/profile", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = response.data;
@@ -128,7 +128,7 @@ export default function Profile() {
       }
 
       const response = await axios.put(
-        "https://doc-backend-h9aw.onrender.com//api/profile",
+        "https://docs-backend-r71d.onrender.com//api/profile",
         updateData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -230,7 +230,7 @@ export default function Profile() {
       const formData = new FormData();
       formData.append("profileImage", croppedFile);
 
-      const res = await fetch("https://doc-backend-h9aw.onrender.com//api/profile/upload", {
+      const res = await fetch("https://docs-backend-r71d.onrender.com//api/profile/upload", {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
@@ -267,7 +267,7 @@ export default function Profile() {
     try {
       const formData = new FormData();
       formData.append("profileImage", fileForUpload);
-      const res = await fetch("https://doc-backend-h9aw.onrender.com//api/profile/upload", {
+      const res = await fetch("https://docs-backend-r71d.onrender.com//api/profile/upload", {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,

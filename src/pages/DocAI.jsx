@@ -18,7 +18,7 @@ export default function DocAI() {
     setSuccess(false);
 
     try {
-      const res = await axios.post("https://doc-backend-h9aw.onrender.com/api/docai/early-access", {
+      const res = await axios.post("https://docs-backend-r71d.onrender.com/api/docai/early-access", {
         email,
       });
       if (res.status === 200) {
