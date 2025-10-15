@@ -17,7 +17,7 @@ export default function Header() {
       setIsLoggedIn(false);
       return;
     }
-    fetch("https://docs-backend-r71d.onrender.com//api/verify", {
+    fetch("http://localhost:5000/api/verify", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((r) => r.json())

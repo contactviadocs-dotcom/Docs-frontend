@@ -87,7 +87,7 @@ export default function Profile() {
 
   const fetchProfile = async () => {
     try {
-      const response = await axios.get("https://docs-backend-r71d.onrender.com//api/profile", {
+  const response = await axios.get("http://localhost:5000/api/profile", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = response.data;
@@ -128,7 +128,7 @@ export default function Profile() {
       }
 
       const response = await axios.put(
-        "https://docs-backend-r71d.onrender.com//api/profile",
+        "http://localhost:5000/api/profile",
         updateData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -230,7 +230,7 @@ export default function Profile() {
       const formData = new FormData();
       formData.append("profileImage", croppedFile);
 
-      const res = await fetch("https://docs-backend-r71d.onrender.com//api/profile/upload", {
+  const res = await fetch("http://localhost:5000/api/profile/upload", {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
@@ -267,7 +267,7 @@ export default function Profile() {
     try {
       const formData = new FormData();
       formData.append("profileImage", fileForUpload);
-      const res = await fetch("https://docs-backend-r71d.onrender.com//api/profile/upload", {
+  const res = await fetch("http://localhost:5000/api/profile/upload", {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,

@@ -26,7 +26,7 @@ export default function Feedback() {
     setSuccess(false);
 
     try {
-      const res = await axios.post("https://docs-backend-r71d.onrender.com//api/feedback", feedback);
+  const res = await axios.post("http://localhost:5000/api/feedback", feedback);
       if (res.status === 200) {
         setSuccess(true);
         setFeedback({ name: "", rating: "", message: "" });

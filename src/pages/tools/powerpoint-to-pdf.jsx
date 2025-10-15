@@ -62,7 +62,7 @@ export default function PowerpointToPdf() {
       formData.append("file", file);
 
       const response = await axios.post(
-        "https://docs-backend-r71d.onrender.com//api/tools/ppt-to-pdf",
+  "http://localhost:5000/api/tools/ppt-to-pdf",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

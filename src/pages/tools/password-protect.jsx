@@ -67,7 +67,7 @@ export default function PasswordProtect() {
       formData.append("password", password);
 
       const response = await axios.post(
-        "https://docs-backend-r71d.onrender.com//api/tools/password-protect",
+  "http://localhost:5000/api/tools/password-protect",
         formData,
         { responseType: "blob" }
       );

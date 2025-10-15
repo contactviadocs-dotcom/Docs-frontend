@@ -1,4 +1,4 @@
-// src/pages/Home.jsx
+  // src/pages/Home.jsx
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -83,7 +83,7 @@ export default function Home() {
   const fetchDocs = useCallback(async () => {
     if (!isLoggedIn) return;
     try {
-      const res = await axios.get("https://docs-backend-r71d.onrender.com//api/docs/my-docs", {
+  const res = await axios.get("http://localhost:5000/api/docs/my-docs", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setDocs(res.data);
@@ -119,7 +119,7 @@ useEffect(() => {
   const confirmDelete = async () => {
     if (!deleteTarget || deleteInput !== deleteTarget.name) return;
     try {
-      await axios.delete(`https://docs-backend-r71d.onrender.com//api/docs/my-docs/${deleteTarget._id}`, {
+  await axios.delete(`http://localhost:5000/api/docs/my-docs/${deleteTarget._id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setDeleteTarget(null);
@@ -133,7 +133,7 @@ useEffect(() => {
   const setFavorite = async (id) => {
     try {
       const res = await axios.patch(
-        `https://docs-backend-r71d.onrender.com//api/docs/my-docs/${id}/favorite`,
+  `http://localhost:5000/api/docs/my-docs/${id}/favorite`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -149,7 +149,7 @@ useEffect(() => {
 
   const shareDocAsPDF = async (doc) => {
     try {
-      const res = await axios.get(`https://docs-backend-r71d.onrender.com//api/docs/my-docs/${doc._id}`, {
+  const res = await axios.get(`http://localhost:5000/api/docs/my-docs/${doc._id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const fullDoc = res.data;

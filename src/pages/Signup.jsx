@@ -1,11 +1,13 @@
-// src/pages/Signup.jsx
-import React, { useState } from "react";
+// Clean Signup component (debounced username check, abort controller, robust fetch handling)
+import React, { useState, useRef } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import logo from "../assets/logo.jpg";
+
+const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -20,25 +22,60 @@ const Signup = () => {
   });
 
   const [usernameError, setUsernameError] = useState("");
+  const usernameTimer = useRef(null);
+  const usernameAbort = useRef(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleChange = async (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
-    if (name === "username" && value.trim()) {
-      try {
-        const res = await fetch(
-          `${process.env.REACT_APP_API_BASE}/api/check-username?username=${value}`
-        );
-        const data = await res.json();
-        setUsernameError(!data.available ? "Username already taken" : "");
-      } catch (err) {
-        console.error("Error checking username:", err);
+    if (name === "username") {
+      const trimmed = value.trim();
+      if (!trimmed) {
+        setUsernameError("");
+        return;
       }
+
+      if (usernameTimer.current) clearTimeout(usernameTimer.current);
+
+      if (usernameAbort.current) {
+        try {
+          usernameAbort.current.abort();
+        } catch (e) {
+          /* ignore */
+        }
+      }
+
+      usernameTimer.current = setTimeout(async () => {
+        const controller = new AbortController();
+        usernameAbort.current = controller;
+        try {
+          const url = `${API_BASE}/api/check-username?username=${encodeURIComponent(trimmed)}`;
+          const res = await fetch(url, { signal: controller.signal });
+          if (!res.ok) {
+            setUsernameError("");
+            return;
+          }
+          const contentType = res.headers.get("content-type") || "";
+          if (!contentType.includes("application/json")) {
+            const text = await res.text();
+            console.warn("Non-JSON response from username check:", text.slice(0, 200));
+            setUsernameError("");
+            return;
+          }
+          const data = await res.json();
+          setUsernameError(!data.available ? "Username already taken" : "");
+        } catch (err) {
+          if (err.name === "AbortError") return;
+          console.error("Error checking username:", err);
+        } finally {
+          usernameAbort.current = null;
+        }
+      }, 400);
     }
   };
 
@@ -63,15 +100,23 @@ const Signup = () => {
 
     setLoading(true);
     try {
-  const res = await fetch(`${process.env.REACT_APP_API_BASE}/api/signup`, {
+      const res = await fetch(`${API_BASE}/api/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-      const data = await res.json();
+
+      const contentType = res.headers.get("content-type") || "";
+      let data = null;
+      if (contentType.includes("application/json")) data = await res.json();
+      else {
+        const text = await res.text();
+        console.warn("Non-JSON signup response:", text.slice(0, 200));
+        data = { message: text };
+      }
 
       if (!res.ok) {
-        toast.error(data.message || "Signup failed");
+        toast.error(data?.message || "Signup failed");
         return;
       }
 
@@ -87,7 +132,6 @@ const Signup = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen p-4 bg-gradient-to-b from-[#EAF4FC] to-[#CFE3FA]">
-      {/* Toast with smaller size on mobile */}
       <ToastContainer
         position="top-right"
         autoClose={2000}
@@ -103,9 +147,7 @@ const Signup = () => {
       />
 
       <div className="flex flex-col w-full max-w-5xl overflow-hidden bg-white shadow-2xl md:flex-row rounded-2xl">
-        {/* Left Section - Image + Back Button */}
         <div className="relative flex items-center justify-center w-full bg-white md:flex-1 md:py-10">
-          {/* Back button */}
           <div className="absolute z-10 top-4 left-4">
             <button
               onClick={() => navigate("/login")}
@@ -124,15 +166,11 @@ const Signup = () => {
           />
         </div>
 
-        {/* Right Section - Form */}
         <div className="flex flex-col justify-center flex-1 p-6 md:p-10">
-          <h2 className="mb-2 text-3xl font-bold text-[#304FFE] sm:text-4xl">
-            Create Account
-          </h2>
+          <h2 className="mb-2 text-3xl font-bold text-[#304FFE] sm:text-4xl">Create Account</h2>
           <p className="mb-6 text-gray-600">Join ProDoc and get started today!</p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Username */}
             <div>
               <input
                 type="text"
@@ -141,18 +179,13 @@ const Signup = () => {
                 value={formData.username}
                 onChange={handleChange}
                 className={`w-full px-3 py-2 border-b-2 outline-none transition-all ${
-                  usernameError
-                    ? "border-red-500"
-                    : "border-gray-300 focus:border-[#3F51B5]"
+                  usernameError ? "border-red-500" : "border-gray-300 focus:border-[#3F51B5]"
                 }`}
                 required
               />
-              {usernameError && (
-                <p className="mt-1 text-sm text-red-500">{usernameError}</p>
-              )}
+              {usernameError && <p className="mt-1 text-sm text-red-500">{usernameError}</p>}
             </div>
 
-            {/* First & Last Name */}
             <div className="flex flex-col gap-4 sm:flex-row">
               <input
                 type="text"
@@ -174,7 +207,6 @@ const Signup = () => {
               />
             </div>
 
-            {/* Email */}
             <input
               type="email"
               name="email"
@@ -185,7 +217,6 @@ const Signup = () => {
               required
             />
 
-            {/* Password */}
             <div className="relative flex items-center border-b-2 border-gray-300 focus-within:border-[#3F51B5]">
               <input
                 type={showPassword ? "text" : "password"}
@@ -197,15 +228,11 @@ const Signup = () => {
                 required
                 minLength={6}
               />
-              <span
-                className="text-[#3F51B5] cursor-pointer hover:text-[#1E88E5]"
-                onClick={togglePassword}
-              >
+              <span className="text-[#3F51B5] cursor-pointer hover:text-[#1E88E5]" onClick={togglePassword}>
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
 
-            {/* Confirm Password */}
             <div className="relative flex items-center border-b-2 border-gray-300 focus-within:border-[#3F51B5]">
               <input
                 type={showConfirmPassword ? "text" : "password"}
@@ -216,15 +243,11 @@ const Signup = () => {
                 className="w-full py-2 bg-transparent outline-none"
                 required
               />
-              <span
-                className="text-[#3F51B5] cursor-pointer hover:text-[#1E88E5]"
-                onClick={toggleConfirmPassword}
-              >
+              <span className="text-[#3F51B5] cursor-pointer hover:text-[#1E88E5]" onClick={toggleConfirmPassword}>
                 {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
 
-            {/* DOB & Gender */}
             <div className="flex flex-col gap-4 sm:flex-row">
               <input
                 type="date"
@@ -247,22 +270,28 @@ const Signup = () => {
               </select>
             </div>
 
-            {/* Submit */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 font-semibold text-white transition-all rounded-full shadow-md bg-gradient-to-r from-[#4FC3F7] to-[#3F51B5] hover:opacity-90 active:scale-[0.98] disabled:opacity-50"
+              className="w-full py-3 font-semibold text-white transition-all rounded-full shadow-md bg-gradient-to-r from-[#4FC3F7] to-[#3F51B5] hover:opacity-90 active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-3"
             >
-              {loading ? "Creating..." : "Sign Up"}
+              {loading ? (
+                <>
+                  <svg className="w-5 h-5 animate-spin" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.3)" strokeWidth="4" />
+                    <path d="M22 12a10 10 0 00-10-10" stroke="white" strokeWidth="4" strokeLinecap="round" />
+                  </svg>
+                  <span>Creating...</span>
+                </>
+              ) : (
+                "Sign Up"
+              )}
             </button>
           </form>
 
           <div className="mt-6 text-center text-gray-700">
             Already have an account?{" "}
-            <span
-              onClick={() => navigate("/login")}
-              className="font-semibold cursor-pointer text-[#1E88E5] hover:underline"
-            >
+            <span onClick={() => navigate("/login")} className="font-semibold cursor-pointer text-[#1E88E5] hover:underline">
               Log in
             </span>
           </div>

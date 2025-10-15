@@ -61,7 +61,7 @@ export default function WordToPDF() {
       formData.append("file", file);
 
       const response = await axios.post(
-        "https://docs-backend-r71d.onrender.com//api/tools/word-to-pdf",
+  "http://localhost:5000/api/tools/word-to-pdf",
         formData,
         { responseType: "blob" }
       );

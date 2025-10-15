@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/static/css/main.897bb828.css",
+    "main.js": "/static/js/main.a4a6d3c7.js",
+    "static/js/239.fe5a2bbe.chunk.js": "/static/js/239.fe5a2bbe.chunk.js",
+    "static/js/977.839fcaba.chunk.js": "/static/js/977.839fcaba.chunk.js",
+    "static/js/455.1a5d1c83.chunk.js": "/static/js/455.1a5d1c83.chunk.js",
+    "static/media/logo2.png": "/static/media/logo2.4eec445ea6c20751e682.png",
+    "static/media/wwi-logo.jpg": "/static/media/wwi-logo.a42e22e4634d0deb9a6f.jpg",
+    "static/media/logo.jpg": "/static/media/logo.14d9954aaf79a2b98dfb.jpg",
+    "index.html": "/index.html",
+    "main.897bb828.css.map": "/static/css/main.897bb828.css.map",
+    "main.a4a6d3c7.js.map": "/static/js/main.a4a6d3c7.js.map",
+    "239.fe5a2bbe.chunk.js.map": "/static/js/239.fe5a2bbe.chunk.js.map",
+    "977.839fcaba.chunk.js.map": "/static/js/977.839fcaba.chunk.js.map",
+    "455.1a5d1c83.chunk.js.map": "/static/js/455.1a5d1c83.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.897bb828.css",
+    "static/js/main.a4a6d3c7.js"
+  ]
+}

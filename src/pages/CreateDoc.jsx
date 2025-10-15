@@ -91,7 +91,7 @@ useEffect(() => {
 
     try {
       const res = await axios.post(
-        "https://docs-backend-r71d.onrender.com//api/docs/check-name",
+        "http://localhost:5000/api/docs/check-name",
         { name: documentName.trim() },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
@@ -231,7 +231,7 @@ useEffect(() => {
 
   const loadDocument = async (docId) => {
     try {
-      const response = await fetch(`https://docs-backend-r71d.onrender.com//api/docs/my-docs/${docId}`, {
+    const response = await fetch(`http://localhost:5000/api/docs/my-docs/${docId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -280,7 +280,7 @@ const handleRename = async (e) => {
     setIsRenaming(true);
 
     // 1) fetch existing docs to check duplicate names
-    const res = await fetch("https://docs-backend-r71d.onrender.com//api/docs/my-docs", {
+  const res = await fetch("http://localhost:5000/api/docs/my-docs", {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -303,7 +303,7 @@ const handleRename = async (e) => {
     }
 
     // 2) update the current doc's name (PUT to your endpoint)
-    const updateRes = await fetch(`https://docs-backend-r71d.onrender.com//api/docs/my-docs/${docId}`, {
+  const updateRes = await fetch(`http://localhost:5000/api/docs/my-docs/${docId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -350,7 +350,7 @@ const handleRename = async (e) => {
 
   try {
     // Fetch all docs
-    const res = await fetch("https://docs-backend-r71d.onrender.com//api/docs/my-docs", {
+  const res = await fetch("http://localhost:5000/api/docs/my-docs", {
       headers: { Authorization: `Bearer ${token}` },
     });
     const docs = await res.json();
@@ -365,7 +365,7 @@ const handleRename = async (e) => {
     }
 
     // Create new doc
-    const response = await fetch("https://docs-backend-r71d.onrender.com//api/docs/my-docs", {
+  const response = await fetch("http://localhost:5000/api/docs/my-docs", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -407,7 +407,7 @@ const handleRename = async (e) => {
 
   try {
     // 🔎 Step 1: Fetch existing docs
-    const res = await fetch("https://docs-backend-r71d.onrender.com//api/docs/my-docs", {
+  const res = await fetch("http://localhost:5000/api/docs/my-docs", {
       headers: { Authorization: `Bearer ${token}` },
     });
     const docs = await res.json();
@@ -425,7 +425,7 @@ const handleRename = async (e) => {
     // 🔎 Step 3: Clear error + create doc
     setErrorMessage("");
 
-    const response = await fetch("https://docs-backend-r71d.onrender.com//api/docs/my-docs", {
+  const response = await fetch("http://localhost:5000/api/docs/my-docs", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -463,7 +463,7 @@ const handleRename = async (e) => {
     const content = editorRef.current?.innerHTML || docContent;
     
     try {
-      const response = await fetch(`https://docs-backend-r71d.onrender.com//api/docs/my-docs/${docId}`, {
+    const response = await fetch(`http://localhost:5000/api/docs/my-docs/${docId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -493,7 +493,7 @@ const handleRename = async (e) => {
     if (!docId) return;
     
     try {
-      const response = await fetch(`https://docs-backend-r71d.onrender.com//api/docs/my-docs/${docId}/favorite`, {
+  const response = await fetch(`http://localhost:5000/api/docs/my-docs/${docId}/favorite`, {
         method: 'PATCH',
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -515,7 +515,7 @@ const handleRename = async (e) => {
 // Delete doc (no alert, no fetchDocs here)
 const deleteDocument = async () => {
   try {
-    await axios.delete(`https://docs-backend-r71d.onrender.com//api/docs/my-docs/${docId}`, {
+  await axios.delete(`http://localhost:5000/api/docs/my-docs/${docId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -631,7 +631,7 @@ const handleImageUpload = async (event) => {
 
   try {
     const token = localStorage.getItem("token");
-    const response = await fetch("https://docs-backend-r71d.onrender.com//api/docs/upload-image", {
+  const response = await fetch("http://localhost:5000/api/docs/upload-image", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
